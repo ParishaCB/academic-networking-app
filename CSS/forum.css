@@ -1,0 +1,262 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.forumscontainers{
+	overflow: hidden;
+    background-color: rgb(255, 255, 255);
+    height: 80px;
+    position: fixed;
+    width: 100%;
+    overflow: auto;
+    z-index: 10;
+}
+
+.forumslogos img {
+  height: 80px;
+  vertical-align: middle;
+  margin-left: 0%;
+}
+
+html,body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    --scrollbarBG: #ffffff;
+    --thumbBG: #000000;
+  }
+  
+  body::-webkit-scrollbar {
+    width: 11px;
+  }
+  
+  body {
+    scrollbar-width: thin;
+    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+  }
+  
+  body::-webkit-scrollbar-track {
+    background: var(--scrollbarBG);
+  }
+  body::-webkit-scrollbar-thumb {
+    background-color: var(--thumbBG) ;
+    border-radius: 6px;
+    border: 3px solid var(--scrollbarBG);
+  }
+
+
+body {
+    background-color: rgba(171, 171, 171, 0.13);
+}
+
+.fmenulinks {
+	margin-top: -50px;
+	float:right;
+}
+
+.fmenulinks ul{
+	list-style-type: none;
+	margin-right: 10px;
+}
+.fmenulinks li{
+	display: inline;
+	margin-right: 50px; 
+}
+
+.fmenulinks a{
+	text-decoration: none;
+	font-weight: 500;
+	color: black;
+    padding: 10px;
+}
+
+.fmenulinks a:hover, .offcanvas a:focus{
+    background-color: rgba(0, 127, 139, 0.785);
+    color: white;
+  }
+
+.forumcontainer {
+    position: relative;
+    top: 150px;
+    left: 430px;
+    background-color: rgba(0, 93, 133, 0.13);
+    width: 50%;
+    padding: 20px;
+}
+
+.forumheading {
+    font-size: 40px;
+    text-align: center;
+}
+
+span {
+    font-style: italic;
+}
+
+.forumtext {
+    text-align: center;
+}
+
+.catheading {
+    position: relative;
+    top: 215px;
+    left: 630px;
+    font-size: 35px;
+}
+
+/* card styling */
+.catcard {
+  position: relative;
+  top: 280px;
+  left: 140px;
+  width: 400px;
+  height: 480px;
+  overflow: hidden;
+  border: 2px solid white;
+  border-radius: 25px;
+  background-color:white;
+  float: left;
+  padding: 40px;
+  margin-left: 15px;
+  margin-right: auto;
+  margin-bottom: 20px;   
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.catcard-text1 {
+  font-size: 25px;
+  margin: 0;
+  text-align: center;
+}
+.catcard-text{
+  font-size: 18px;
+  margin: 0;
+  text-align: center;
+}
+.catimage {
+  align-items: center;
+  width: 300px;
+  height: 150px;
+  position: relative;
+  left: 15px;
+  border-radius: 10px;
+}
+.catbutton {
+  padding: 10px;
+  background: #000000;
+  color: white;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  text-align: center;
+  margin-left: 100px;
+}
+.catbutton a {
+  text-decoration: none;
+  color: white;
+}
+
+.threadheading {
+  position: relative;
+  top: 215px;
+  left: 660px;
+  font-size: 35px;
+}
+
+.threadtitle {
+  position: relative;
+  top: 250px;
+  left: 450px;
+}
+.threadtitle a {
+  color: blue;
+}
+.threadtitle a:hover {
+  color: black;
+}
+.threadesc {
+  position: relative;
+  top: 250px;
+  left: 450px;
+}
+
+.threadlheading {
+  position: relative;
+  top: 215px;
+  left: 600px;
+  font-size: 35px;
+}
+
+.noresultcontainer {
+  position: relative;
+  top: 250px;
+  left: 430px;
+  background-color: rgba(0, 133, 106, 0.13);
+  width: 50%;
+  padding: 20px;
+}
+
+.threadcreate {
+  position: relative;
+  top: 280px;
+  left: 430px;
+  width: 50%;
+  padding: 20px;
+  text-align: center;
+  background-color: rgba(250, 235, 215, 0.203);  
+}
+
+.threadelem {
+  font-size: 18px;
+}
+
+.threadsubmit {
+  padding: 10px;
+  background-color: black;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.threadeleme {
+  width: 60%;
+  font-size: 20px;
+}
+
+textarea {
+  resize: none;
+}
+
+.successalert {
+  position: relative;
+  top: 80px;
+  background-color: green;
+  color: white;
+  padding: 10px;
+}
+.successalert2 {
+  position: relative;
+  top: -165px;
+  background-color: green;
+  color: white;
+  padding: 10px;
+}
+
+.forumimage {
+  width: 50px;
+  height: 50px;
+  border-radius: 100px;
+  position: relative;
+  top: 320px;
+  left: 380px;  
+}
