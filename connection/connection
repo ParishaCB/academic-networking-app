@@ -1,0 +1,17 @@
+<?php
+function connect() {
+  $servername = "localhost";
+  $username = "parisha";
+  $password = "ParishaDatabase1234!";
+
+  $pdo = new PDO("mysql:host=$servername;dbname=educatic", $username, $password);
+  if ( $pdo) {
+    // make errors throw exceptions
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $pdo;
+  } else {
+    die("Could not create PDO connection.");
+  }
+}
+
+?>
