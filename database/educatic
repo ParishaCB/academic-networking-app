@@ -1,0 +1,252 @@
+-- phpMyAdmin SQL Dump
+-- version 5.1.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: May 01, 2022 at 12:26 PM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 8.1.2
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `educatic`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categories`
+--
+
+CREATE TABLE `categories` (
+  `category_id` int(8) NOT NULL,
+  `category_name` varchar(255) NOT NULL,
+  `category_description` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`category_id`, `category_name`, `category_description`) VALUES
+(1, 'University', 'Talk About All Things Related To University'),
+(2, 'Study Help', 'Get Help With Your University Studies & Help Others Out Too\r\n'),
+(3, 'Debate & Current Affairs', 'Discussions On Everything From Politics to Current Trending Topics'),
+(4, 'Computer Science & Informatics', 'Discussions Related To Computer Science Courses\n\n'),
+(5, 'Careers And Jobs', 'Find Guidance About Everything To Do With Careers And Jobs\r\n');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `comment_id` int(8) NOT NULL,
+  `comment_content` text NOT NULL,
+  `thread_id` int(8) NOT NULL,
+  `comment_by` int(8) NOT NULL,
+  `comment_time` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `passwordreset`
+--
+
+CREATE TABLE `passwordreset` (
+  `userid` int(11) NOT NULL,
+  `resethash` varchar(64) NOT NULL,
+  `resettime` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `threads`
+--
+
+CREATE TABLE `threads` (
+  `thread_id` int(7) NOT NULL,
+  `thread_title` varchar(255) NOT NULL,
+  `thread_description` text NOT NULL,
+  `thread_cat_id` int(7) NOT NULL,
+  `thread_user_id` int(7) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `threads`
+--
+
+INSERT INTO `threads` (`thread_id`, `thread_title`, `thread_description`, `thread_cat_id`, `thread_user_id`) VALUES
+(1, 'Revision Help', 'Need Help On Organising Revision', 4, 23),
+(2, 'Exam Dates', 'Does Anyone Know The Exam Dates?', 4, 23);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `useraccounts`
+--
+
+CREATE TABLE `useraccounts` (
+  `userid` int(11) NOT NULL,
+  `first_name` text NOT NULL,
+  `last_name` text NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `user_password` varchar(255) NOT NULL,
+  `user_profile` longblob NOT NULL,
+  `user_age` varchar(255) NOT NULL,
+  `user_gender` varchar(255) NOT NULL,
+  `user_nationality` varchar(255) NOT NULL,
+  `user_education` varchar(255) NOT NULL,
+  `user_school` varchar(255) NOT NULL,
+  `user_course` varchar(255) NOT NULL,
+  `user_interest_one` varchar(255) NOT NULL,
+  `user_interest_two` varchar(255) NOT NULL,
+  `user_interest_three` varchar(255) NOT NULL,
+  `user_interest_four` varchar(255) NOT NULL,
+  `user_project` varchar(255) NOT NULL,
+  `activationcode` varchar(255) NOT NULL,
+  `emailstatus` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `useraccounts`
+--
+
+INSERT INTO `useraccounts` (`userid`, `first_name`, `last_name`, `email`, `user_password`, `user_profile`, `user_age`, `user_gender`, `user_nationality`, `user_education`, `user_school`, `user_course`, `user_interest_one`, `user_interest_two`, `user_interest_three`, `user_interest_four`, `user_project`, `activationcode`, `emailstatus`) VALUES
+(5, 'Abigail', 'Langley', 'langleya@lsbu.ac.uk', '$2y$10$fFXRvGhTpP3clIfhnn8ctOmvB31acQatHMOI9hhWAey9RHsUrPidu', 0x7573657270726f66696c65732f696d616765312e6a7067, '21', 'Female', 'Brazilian', 'Undergraduate', 'Engineering', 'Information Technology', 'Coding', 'Travelling', 'Sports', 'Gardening', '', 'd27085d25d9de09af5878d09e15a44e8', 1),
+(6, 'Tiffany ', 'Burne', 'burnet@lsbu.ac.uk', '$2y$10$wrRvF.X36vSS/QZV7L4bce6M/vVRtxd5fi3ckOsjDpYzR5QSZq4l6', 0x7573657270726f66696c65732f696d616765322e6a7067, '22', 'Female', 'Bosnian', 'Undergraduate', 'Engineering', 'Mechanical Engineering', 'Blogging', 'Yoga', 'Travelling', 'Photography', '', 'e1b2e80e6e40fd670dde6b0a4bd96b35', 1),
+(7, 'Kymani ', 'Sanders', 'sandersk@lsbu.ac.uk', '$2y$10$0LgHGs8FLU4Glyy5bwk4celOIAeEyLagdyNSRoK9dy2zz8qPOI1bS', 0x7573657270726f66696c65732f696d616765332e6a7067, '24', 'Female', 'Cypriot', 'Undergraduate', 'Engineering', 'Civil Engineering', 'Blogging', 'Writing', 'Photography', 'Travelling', '', 'b7c3f27c2a253b441e102240ceea71c8', 1),
+(8, 'Vernon ', 'Clay', 'clayv@lsbu.ac.uk', '$2y$10$yfXlzzadcaP8X8EPm//gf.jVwY.3bwlaM2.oWzWtOvAM0Zu3Wtso2', 0x7573657270726f66696c65732f696d616765342e6a7067, '23', 'Male', 'French', 'Undergraduate', 'Engineering', 'Advanced Vehicle Engineering', 'Photography', 'Writing', 'Sports', 'Yoga', '', 'f7c385bb80cdbadea35464d12ee513e8', 1),
+(9, 'Daniela ', 'Flowers', 'flowersd@lsbu.ac.uk', '$2y$10$fPlpG1AB3G/.Fi7ztg/5WuX25q8khsJDKQvsc1hNl8HDXP/ZtKBI.', 0x7573657270726f66696c65732f696d616765352e6a7067, '22', 'Female', 'Indian', 'Undergraduate', 'Engineering', 'Electrical Power Engineering', 'Blogging', 'Volunteering', 'Reading', 'Gaming', '', '2d41733c5271f1334272edd398b32dcb', 1),
+(10, 'Sebastian ', 'Willis', 'williss@lsbu.ac.uk', '$2y$10$2Sm1.F/2hfo1dciyKaZCC.zPJgZkAa2tpuvHm3qabVNKbeX2BZhHG', 0x7573657270726f66696c65732f696d616765362e6a7067, '24', 'Male', 'Barbadian', 'Undergraduate', 'Engineering', 'Mechanical Engineering', 'Gaming', 'Travelling', 'Photography', 'Sports', '', 'efb76dbcc53e09bf20441483aec02181', 1),
+(11, 'Kayne ', 'Mansell', 'mansellk@lsbu.ac.uk', '$2y$10$avSd84Sr8vnyAcwZ25d5m.RnKjyys5dSj1rrncdIk.U3wU51SPjaG', 0x7573657270726f66696c65732f696d616765372e6a7067, '22', 'Male', 'Filipino', 'Undergraduate', 'Engineering', 'Civil Engineering', 'Gaming', 'Travelling', 'Sports', 'Photography', '', 'ea5a249fdd6e404b9132ebbd75773201', 1),
+(12, 'Greta ', 'Broughton', 'broughtong@lsbu.ac.uk', '$2y$10$Pf62U8OGSB1EkLyQnGVHJeZ9khut1OdcjD35Vm01LNX3d1BG7tsFG', 0x7573657270726f66696c65732f696d616765382e6a7067, '22', 'Female', 'Australian', 'Undergraduate', 'Engineering', 'Electrical and Electronic Engineering', 'Gaming', 'Volunteering', 'Yoga', 'Travelling', '', 'a81489fb3444f8ec9fd1cf1249f89cdb', 1),
+(13, 'Alfred ', 'Cooke', 'cookea@lsbu.ac.uk', '$2y$10$4K8B4PFuybCjYRz8xqvc0.G2KuwPGAcxmfd7L3YQHj1tJJwHqgNcy', 0x7573657270726f66696c65732f696d616765392e6a7067, '22', 'Male', 'Burmese', 'Undergraduate', 'Engineering', 'Chemical Engineering', 'Animals', 'Yoga', 'Travelling', 'Photography', '', '1a9b827c9dd1e263dd4002555093243a', 1),
+(14, 'Lloyd ', 'Meadows', 'meadowsl@lsbu.ac.uk', '$2y$10$CBpbBSJZ64eSQt/iwlFlsO2HUscJv7aqSW.GWt60hD54b6.UN8TMq', 0x7573657270726f66696c65732f696d61676531302e6a7067, '23', 'Male', 'British', 'Undergraduate', 'Engineering', 'Chemical and Energy Engineering', 'Gaming', 'Travelling', 'Sports', 'Photography', '', '5877b7ae1e6c231af0098fb2dd860ebb', 1),
+(15, 'Rizwan ', 'Khan', 'khanr@lsbu.ac.uk', '$2y$10$zulikS4A/bESRKc5oxTAmuqFalhB26EWiI/4AxJ/xLwyfw0VAM0Qe', 0x7573657270726f66696c65732f696d61676531312e6a7067, '22', 'Male', 'Pakistani', 'Undergraduate', 'Engineering', 'Computer Science', 'Coding', 'Volunteering', 'Travelling', 'Sports', '', '0ef09f45321506aa5ce87791e4fe9694', 1),
+(16, 'Haseeb ', 'Rankin', 'rankinh@lsbu.ac.uk', '$2y$10$D3zfrIiBGeYrNjkSmxBm4eReTVUvrj1J2S9CRarp0b1lKryhSe0Km', 0x7573657270726f66696c65732f696d61676531322e6a7067, '25', 'Male', 'Indian', 'Postgraduate', 'Engineering', 'Computer Science', 'Coding', 'Blogging', 'Travelling', 'Gaming', 'Machine Learning Start Up', '988cdae690faef9877e4465ad6742076', 1),
+(17, 'Lynda ', 'Dillon', 'dillonl@lsbu.ac.uk', '$2y$10$6uBiCJqoW4Z/MATuTrG59O/mvvRzvBokP2sTgT3rvSWmV1bxWR.lS', 0x7573657270726f66696c65732f696d61676531332e6a7067, '23', 'Female', 'American', 'Undergraduate', 'Engineering', 'Electrical and Electronic Engineering', 'Coding', 'Writing', 'Volunteering', 'Travelling', '', 'd1580bbd63b5f2bc5e77aca71e6fdc64', 1),
+(18, 'Radhika ', 'Krueger', 'kruegerr@lsbu.ac.uk', '$2y$10$s40nRdtvR6PwK1ID84t4W.s0aMk/6LZKs7oEpDQvP7HD7taXJYq/K', 0x7573657270726f66696c65732f696d61676531342e6a7067, '23', 'Female', 'Indian', 'Postgraduate', 'Engineering', 'Information Technology', 'Coding', 'Blogging', 'Travelling', 'Reading', '', 'c0c708d28795b1771f096a499b903f1b', 1),
+(19, 'Jessie ', 'Mcdaniel', 'mcdanielj@lsbu.ac.uk', '$2y$10$16bRaMCnqhiS.CbfgmdVSuzabcV6nMj71yTR7s8F97sUYs7A3pqgW', 0x7573657270726f66696c65732f696d61676531352e6a7067, '23', 'Female', 'American', 'Undergraduate', 'Engineering', 'Computer Science', 'Coding', 'Travelling', 'Reading', 'Gaming', '', 'a03f936761c66c8786a934246199a11f', 1),
+(20, 'Kirsten ', 'Amos', 'amosk@lsbu.ac.uk', '$2y$10$vYmvpUsW77789jPD12cjQ.D4DZewguFUAb3KI2powFFSqAAdnQ5kG', 0x7573657270726f66696c65732f, '22', 'Female', 'British', 'Undergraduate', 'Engineering', 'Information Technology', 'NULL', 'NULL', 'NULL', 'NULL', '', '11c997b216756d2bac08345dbc207712', 1),
+(21, 'Stephanie', 'Greham', 'grehams@lsbu.ac.uk', '$2y$10$OrDrRe5i2dJhGghtUHvknec/bcU/qUdRh0RSzaBlLCO6t4V6W28fW', 0x7573657270726f66696c65732f696d61676531372e6a7067, '23', 'Female', 'Egyptian', 'Postgraduate', 'Engineering', 'Civil Engineering', 'Blogging', 'Yoga', 'Volunteering', 'Travelling', '', 'f75fdeeba546403f484b0d676de75859', 1),
+(22, 'Patricia', 'Dicole', 'dicolep@lsbu.ac.uk', '$2y$10$EZqCc6UAAt5hpMxvU8/ho.t.8GCWmwBffSmwcmO/O/27zuDy/7UMS', 0x7573657270726f66696c65732f696d61676531382e6a7067, '24', 'Female', 'Barbadian', 'Postgraduate', 'Engineering', 'Chemical Engineering', 'Photography', 'Reading', 'Volunteering', 'Writing', '', '2ba4d7d9c55d26817ec1e20a0f263458', 1),
+(23, 'Will', 'Thomas', 'thomasw@lsbu.ac.uk', '$2y$10$6hFV/FW9QpbsmwqsNhDeE.gK9yPDqdcYc24sfffEQ2MSUyzIuIpW2', 0x7573657270726f66696c65732f696d61676531392e6a7067, '23', 'Male', 'British', 'Undergraduate', 'Engineering', 'Computer Science', 'Coding', 'Sports', 'Travelling', 'Photography', '', 'c43b97d339d76be9c28a690471671ece', 1),
+(24, 'Belle', 'Tariano', 'tarianob@lsbu.ac.uk', '$2y$10$XF5J1lxFXFObUKHNv7lNXe7oW.LSX4t/Q5UtKxLYDMnzx72m.p3PG', 0x7573657270726f66696c65732f696d61676532302e6a7067, '22', 'Female', 'Filipino', 'Undergraduate', 'Engineering', 'Chemical and Energy Engineering', 'Photography', 'Volunteering', 'Travelling', 'Sports', '', '5a42346ddd74d01bbc79f28e639a7b81', 1);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`category_id`);
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`comment_id`);
+
+--
+-- Indexes for table `passwordreset`
+--
+ALTER TABLE `passwordreset`
+  ADD PRIMARY KEY (`userid`);
+
+--
+-- Indexes for table `threads`
+--
+ALTER TABLE `threads`
+  ADD PRIMARY KEY (`thread_id`),
+  ADD KEY `thread_user_id` (`thread_user_id`);
+
+--
+-- Indexes for table `useraccounts`
+--
+ALTER TABLE `useraccounts`
+  ADD PRIMARY KEY (`userid`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `category_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `comment_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `passwordreset`
+--
+ALTER TABLE `passwordreset`
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `threads`
+--
+ALTER TABLE `threads`
+  MODIFY `thread_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `useraccounts`
+--
+ALTER TABLE `useraccounts`
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+-- Table structure for table `admin`
+--
+
+CREATE TABLE `admin` (
+  `adminid` int(11) NOT NULL,
+  `username` varchar(64) NOT NULL,
+  `password` varchar(255) NOT NULL,
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- Table structure for table `messages`
+--
+
+CREATE TABLE `admin` (
+  `messageid` int(11) NOT NULL,
+  `senderuser_id` int(11) NOT NULL,
+  `receiveruser_id` int(11) NOT NULL,
+  `message` varchar(255) NOT NULL,
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Table structure for table `matches`
+--
+
+CREATE TABLE `matches` (
+  `matchid` int(11) NOT NULL,
+  `userid1` int(11) NOT NULL,
+  `userid2` int(11) NOT NULL,
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
