@@ -1,0 +1,18 @@
+<?php
+session_start();
+?>
+
+<?php
+include '../connection/dbconnect.php';
+$msg = '';
+
+$pdo_statement=$conn->prepare("DELETE FROM useraccounts where userid=" . $_GET['userid']);
+$pdo_statement->execute();    
+
+if($pdo_statement) {
+
+    header("Location: deletesuccess.php");
+}else {
+    echo $msg ("Database Not Available");
+}
+?>
