@@ -1,0 +1,86 @@
+<?php
+
+error_reporting(0);
+
+include '../connection/dbconnect.php';
+session_start();
+
+$sessionID = $_SESSION['userid'];
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="../media/favicon.png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/chats.css">
+    <title>Educatic | Chats</title>
+</head>
+
+<body>
+    <section>
+        <header>
+        <div class="cheaderscontainers">
+            <div class="cheaderslogos">
+                <a href="../userdashboard.php"><img src="../media/logo4.png" alt="EducaticLogo"></a>
+            </div>
+        </div>
+        </header>
+    </section>
+
+       <!-- Side navigation -->
+       <div class="navs-wrapper">
+        <div class="navs-sidebar">
+        <ul>
+            <br><br><br>
+            <li><a href="../userdashboard.php"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="../matches/matches.php"><i class="fas fa-user-graduate"></i> My Matches</a></li>
+            <li><a href="./chat.php"><i class="fas fa-envelope"></i> Messages</a></li>
+            <li><a href="../forum/forum.php"><i class="fas fa-comments"></i> Forums</a></li>
+            <li><a href="../editprofile/editprofile.php"><i class="fas fa-user"></i> My Account</a></li><br><br><br><br><br>
+            <br><br><br><br><br><br><br><li><a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul> 
+    </div>
+
+    <div class="chat_content">
+        <div class="chat_header">
+            <h4>Your Chats</h4>
+            <p>All Your Previous Chats Are Available Here</p>
+        </div>
+
+        <div class="chat-list-container">
+            <h2 class="chat-container-text">Select A User To Start A Chat</h2><br><br> 
+            <hr>
+
+            <?php
+
+            $matchuser = $_GET['userid']; 
+            
+            $query5 = $conn->prepare("SELECT * FROM matches LEFT JOIN useraccounts ON useraccounts.userid = matches.userid2
+                                    AND userid1 = $sessionID OR useraccounts.userid = matches.userid1 AND userid2 = $sessionID");
+            $query5->execute();
+            $query6 = $query5->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($query6 as $query7) {?>
+
+                <br><br><img src="/Educatic/<?php echo $query7['user_profile']; ?>" alt="" class="chat-image">
+                <h4 class="profile-text"><?php echo $query7['first_name']. " " . $query7['last_name']; ?></h4>
+                <button class="chatconnectbtn"><a href="../chats/message.php?userid=<?php echo $query7['userid']?>">Message</a></button>
+                <br>
+
+            <?php
+            }
+            ?>
+
+        </div>
+
+    
+    </div>
+
+</body>
+</html>
+
