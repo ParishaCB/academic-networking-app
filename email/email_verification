@@ -1,0 +1,79 @@
+<?php
+
+include 'dbconnect.php';
+$msg = '';
+
+if(!empty($_GET['code']) && isset($_GET['code']))
+{
+$code=$_GET['code'];
+
+$sql = "SELECT * FROM useraccounts WHERE activationcode=:code";
+$query = $conn -> prepare($sql);
+$query->bindParam(':code',$code,PDO::PARAM_STR);
+$query->execute();
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+$cnt=1;
+if($query->rowCount() > 0)
+{
+  
+$st=0;
+$sql = "SELECT userid FROM useraccounts WHERE activationcode=:code and status=:st";
+$query = $conn -> prepare($sql);
+$query->bindParam(':code',$code,PDO::PARAM_STR);
+$query->bindParam(':st',$st,PDO::PARAM_STR);
+$query->execute();
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+$cnt=1;
+if($query->rowCount() > 0)
+{
+$st=1;
+$sql = "UPDATE useraccounts SET status=:st WHERE activationcode=:code";
+$query = $conn->prepare($sql);
+$query -> bindParam(':code',$code, PDO::PARAM_STR);
+$query-> bindParam(':st',$st, PDO::PARAM_STR);
+$query -> execute();
+}
+else
+{
+$msg ="Your Account Has Already Been Activated.";
+}
+}
+else
+{
+$msg ="Error. Invalid Activation Link.";
+}
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="./media/favicon.png"/>
+    <link rel="stylesheet" href="./CSS/register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" 
+    integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Educatic | Email Verification</title>
+</head>
+
+<body>
+<section>
+        <header>    
+            <div class="headercontainer">
+                <div class="headerlogo">
+                    <a href=""><img src="./media/logo.png" alt="EducaticLogo"></a>
+                </div>
+        </header>
+</section>
+
+    <div class="emailcontainer">
+            <h1 class="ectext1">Thank You For Verifying Your Account!</h1>
+            <h3 class="ectext2">You Can Login Here: <br><br>
+            <h3 class="ectext2"><a href="https://educaticnetworking.000webhostapp.com/index.php">Login</a></h3>
+    </div>
+
+</body>
+</html>
