@@ -1,0 +1,251 @@
+<?php
+include '../connection/dbconnect.php';
+session_start();
+
+$sessionID = $_SESSION['userid'];
+
+//get all the details related to the current logged in user
+//get all the current logged in users interests and save them in a variable 
+
+$finduser = $conn->prepare("SELECT * FROM useraccounts WHERE userid = '$sessionID'");
+$finduser->execute();
+$row = $finduser->fetch(PDO::FETCH_ASSOC);
+$userinterests = array($row['user_interest_one'], $row['user_interest_two'], $row['user_interest_three'], $row['user_interest_four']);
+
+//query the database to find all the interests that are similar to the current logged in user but doesn't include the current user's interests as results 
+//if matches are found, display as a card to the user 
+
+$findmatch = $conn->prepare("SELECT * FROM useraccounts WHERE (
+                            user_interest_one LIKE '%{$userinterests[0]}%' OR 
+                            user_interest_two LIKE '%{$userinterests[1]}%' OR 
+                            user_interest_three LIKE '%{$userinterests[2]}%' OR 
+                            user_interest_four LIKE '%{$userinterests[3]}%' ) AND userid<>'$sessionID'");
+$findmatch->execute();
+$findmatch->fetch(PDO::FETCH_ASSOC);
+
+
+// put this code in the html to generate the cards showing the user their matches
+// if($findmatch != 0) {
+//     foreach($findmatch as $potentialmatch)  {
+//         echo $potentialmatch['first_name'];
+//         echo $potentialmatch['last_name'], '<br>';
+//     }
+// }else {
+//     echo 'No Matches Could Be Found Right Now.';
+// }
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="../media/favicon.png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<!-- Add IntroJs styles -->
+	<link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    <link rel="stylesheet" href="../CSS/dashboardstyle.css">
+    <title>Educatic | Matches</title>
+</head>
+
+<body>
+    <section> 
+        <header>
+        <div class="headerscontainers">
+            <div class="headerslogos">
+                <a href="../userdashboard.php"><img src="../media/logo4.png" alt="EducaticLogo"></a>
+            </div>
+        </div>
+        </header>
+    </section>
+
+    <!-- Side navigation -->
+    <div class="navs-wrapper">
+    <div class="navs-sidebar">
+        <ul>
+            <br><br><br>
+            <li><a href="../userdashboard.php"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="matches.php" ><i class="fas fa-user-graduate"></i> My Matches</a></li>
+            <li><a href="../chats/chat.php"><i class="fas fa-envelope"></i> Messages</a></li>
+            <li><a href="../forum/forum.php"><i class="fas fa-comments"></i> Forums</a></li>
+            <li><a href="../editprofile/editprofile.php"><i class="fas fa-user"></i> My Account</a></li><br><br><br><br><br>
+            <br><br><br><br><br><br><br><li><a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul> 
+    </div>
+
+    <!-- display matches begins here -->
+    
+    <div class="main_contents">
+        <div class="match_header">
+            <h4>Your Matches</h4>
+            <p>We Found These Users That Share Similar Interests With You!</p>
+        </div>
+    
+    <!-- display the similar matches as cards here -->
+    <?php if($findmatch != 0) {
+            foreach ( $findmatch as $potentialmatch) {?>
+     
+        <div class="card">   
+            <div class="container">       
+            <img src="/Educatic/<?php echo $potentialmatch['user_profile']?>" height="200" width="200" class="card-image"><br><br>
+            <div><h2 class="card-text1"> <?php echo $potentialmatch['first_name']?> </h2></div>
+            <div><h2 class="card-text1"> <?php echo $potentialmatch['last_name']?> </h2></div><br>
+            <div><h2 class="card-text"> <?php echo $potentialmatch['user_education']?> </h2></div><br>
+            <div><h2 class="card-text"> <?php echo $potentialmatch['user_school']?> </h2></div><br>
+            <div><h2 class="card-text"> <?php echo $potentialmatch['user_course']?> </h2></div><br>
+            <div><h4 class="card-interest">Their Interests:</h4></div>
+            <p class="card-interest"><?php echo $potentialmatch['user_interest_one']?>, <?php echo $potentialmatch['user_interest_two']?>,
+                <?php echo $potentialmatch['user_interest_three']?>, <?php echo $potentialmatch['user_interest_four']?></p><br>
+            <div><button class="connectbtn"><a href="../chats/getuserid.php?userid=<?php echo $potentialmatch['userid']?> ">Connect</a></button></div>
+            </div>
+    </div>
+    <?php } 
+        }else {
+            echo '<h3 class="nomatches">No Matches Could Be Found Right Now. Please Check Back Later.</h3>';
+        }
+    ?>
+      
+    </div>
+        
+    <!-- //filter matches to find specific people from specific courses or other filters -->
+    <div class="filtermatches">
+        <img src="../media/filter.png" onclick="document.getElementById('searchfilter').style.display='block'" 
+            alt="filterResults" class="resultsfilter" title="Filter Results">
+    </div>
+    <div id="searchfilter" class="searchmodal">
+        <span onclick="document.getElementById('searchfilter').style.display='none'" class="close" title="Close Modal">&times;</span>
+        <form class="searchmodal-content" action="./search.php" method="POST" enctype="multipart/form-data">
+            <div class="searchcontainer">
+            <h1>Filter Your Search Results To Find Specific People</h1><br><br>
+
+            <p class="searcho">Education Level:</p>
+            <select name="user_education" class="searcho">
+                <option value=""></option>
+                <option value="Undergraduate">Undergraduate</option>
+                <option value="Postgraduate">Postgraduate</option>
+            </select>
+
+            <br><br><p class="searcho">Course:</p>
+            <select name="user_course" class="searcho">
+                <option value=""></option>
+                <option value="Advanced Vehicle Engineering">Advanced Vehicle Engineering</option>
+                <option value="Building Services Engineering">Building Services Engineering</option>
+                <option value="Chemical and Energy Engineering">Chemical and Energy Engineering</option>
+                <option value="Chemical Engineering">Chemical Engineering</option>
+                <option value="Civil Engineering">Civil Engineering</option>
+                <option value="Electrical and Electronic Engineering">Electrical and Electronic Engineering</option>
+                <option value="Electrical Power Engineering">Electrical Power Engineering</option>
+                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Information Technology">Information Technology</option>
+            </select>
+
+            <br><br><p class="searcho">Gender:</p>
+            <select name="user_gender" class="searcho">
+                <option value=""></option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <br><br><p class="searcho">Interest 1:</p>
+            <select name="user_interest_one" class="searcho">
+                <option value=""></option>
+                <option value="Animals">Animals</option>
+                <option value="Arts and Crafts">Arts and Crafts</option>
+                <option value="Blogging">Blogging</option>
+                <option value="Coding">Coding</option>
+                <option value="Cooking">Cooking</option>
+                <option value="Gaming">Gaming</option>
+                <option value="Gardening">Gardening</option>
+                <option value="Photography">Photography</option>
+                <option value="Reading">Reading</option>
+                <option value="Sports">Sports</option>
+                <option value="Travelling">Travelling</option>
+                <option value="Writing">Writing</option>
+                <option value="Volunteering">Volunteering</option>
+                <option value="Yoga">Yoga</option>
+            </select>
+
+            <br><br><p class="searcho">Interest 2:</p>
+            <select name="user_interest_two" class="searcho">
+                <option value=""></option>
+                <option value="Animals">Animals</option>
+                <option value="Arts and Crafts">Arts and Crafts</option>
+                <option value="Blogging">Blogging</option>
+                <option value="Coding">Coding</option>
+                <option value="Cooking">Cooking</option>
+                <option value="Gaming">Gaming</option>
+                <option value="Gardening">Gardening</option>
+                <option value="Photography">Photography</option>
+                <option value="Reading">Reading</option>
+                <option value="Sports">Sports</option>
+                <option value="Travelling">Travelling</option>
+                <option value="Writing">Writing</option>
+                <option value="Volunteering">Volunteering</option>
+                <option value="Yoga">Yoga</option>
+            </select>
+
+            <br><br><p class="searcho">Interest 3:</p>
+            <select name="user_interest_three" class="searcho">
+                <option value=""></option>
+                <option value="Animals">Animals</option>
+                <option value="Arts and Crafts">Arts and Crafts</option>
+                <option value="Blogging">Blogging</option>
+                <option value="Coding">Coding</option>
+                <option value="Cooking">Cooking</option>
+                <option value="Gaming">Gaming</option>
+                <option value="Gardening">Gardening</option>
+                <option value="Photography">Photography</option>
+                <option value="Reading">Reading</option>
+                <option value="Sports">Sports</option>
+                <option value="Travelling">Travelling</option>
+                <option value="Writing">Writing</option>
+                <option value="Volunteering">Volunteering</option>
+                <option value="Yoga">Yoga</option>
+            </select>
+
+            <br><br><p class="searcho">Interest 4:</p>
+            <select name="user_interest_four" class="searcho">
+                <option value=""></option>
+                <option value="Animals">Animals</option>
+                <option value="Arts and Crafts">Arts and Crafts</option>
+                <option value="Blogging">Blogging</option>
+                <option value="Coding">Coding</option>
+                <option value="Cooking">Cooking</option>
+                <option value="Gaming">Gaming</option>
+                <option value="Gardening">Gardening</option>
+                <option value="Photography">Photography</option>
+                <option value="Reading">Reading</option>
+                <option value="Sports">Sports</option>
+                <option value="Travelling">Travelling</option>
+                <option value="Writing">Writing</option>
+                <option value="Volunteering">Volunteering</option>
+                <option value="Yoga">Yoga</option>
+            </select>
+
+            <div>
+                <br><br><br>
+                <button class="searchbtn" type="submit" name="search">Search</button>
+            </div>
+            </div>
+        </form>
+        </div>
+    </div>
+
+<script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+
+<!-- Search Filter Script JS -->
+    <script>
+        var modal = document.getElementById('searchfilter');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>
+</body>
+</html>
