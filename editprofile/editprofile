@@ -1,0 +1,287 @@
+<?php
+include '../connection/dbconnect.php';
+session_start();
+
+$sessionID = $_SESSION["userid"];
+
+$pdo_statement = $conn->prepare("SELECT * FROM useraccounts WHERE userid= '$sessionID'");
+$pdo_statement->execute();
+$result = $pdo_statement->fetchAll();
+
+if(isset($_POST['editprofile'])) {
+	$userid = $_REQUEST['userid'];
+	$first_name = $_POST['first_name'];
+	$last_name = $_POST['last_name'];
+    $user_age = $_POST['user_age'];
+	$user_nationality = $_POST['user_nationality'];
+	$user_gender = $_POST['user_gender'];
+    $user_education = $_POST['user_education'];
+	$user_school = $_POST['user_school'];
+	$user_course = $_POST['user_course'];
+	$user_interest_one = $_POST['user_interest_one'];
+	$user_interest_two = $_POST['user_interest_two'];
+	$user_interest_three = $_POST['user_interest_three'];
+	$user_interest_four = $_POST['user_interest_four'];
+	$user_project = $_POST['user_project'];
+
+	$user_profile = $_FILES['user_profile']['name'];
+	$tempname = $_FILES['user_profile']['tmp_name'];
+	$folder = '../userprofiles/'.$user_profile;
+	move_uploaded_file($tempname,$folder);
+
+	$pdo_statements = $conn->prepare("UPDATE useraccounts SET first_name='$first_name', 
+    last_name='$last_name', 
+    user_age='$user_age', 
+    user_nationality='$user_nationality', 
+    user_gender='$user_gender', 
+    user_education='$user_education', 
+    user_school='$user_school', 
+    user_course='$user_course', 
+    user_interest_one='$user_interest_one', 
+    user_interest_two='$user_interest_two', 
+    user_interest_three='$user_interest_three', 
+    user_interest_four='$user_interest_four', 
+    user_project='$user_project', 
+	user_profile='$folder'
+    WHERE userid='$userid' ");
+	$results = $pdo_statements->execute();
+
+    if($results) {
+
+		function function_alert($message) {
+			echo "<script>alert('$message');</script>";
+		}
+
+		function_alert("Profile Updated Successfully.");
+		
+	}else{
+		function_alert("Database Unavailable. Try Again Later.");
+	}
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="../media/favicon.png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<!-- Add IntroJs styles -->
+	<link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    <link rel="stylesheet" href="../CSS/dashboardstyle.css">
+    <title>Educatic | My Profile</title>
+</head>
+
+<body>
+    <section>
+        <header>
+        <div class="headerscontainers">
+            <div class="headerslogos">
+                <a href="../userdashboard.php"><img src="../media/logo4.png" alt="EducaticLogo"></a>
+            </div>
+        </div>
+        </header>
+    </section>
+
+     <!-- Side navigation -->
+     <div class="navs-wrapper">
+    <div class="navs-sidebar">
+        <ul>
+            <br><br><br>
+            <li><a href="../userdashboard.php"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="../matches/matches.php" ><i class="fas fa-user-graduate"></i> My Matches</a></li>
+            <li><a href="../chats/chat.php"><i class="fas fa-envelope"></i> Messages</a></li>
+            <li><a href="../forum/forum.php"><i class="fas fa-comments"></i> Forums</a></li>
+            <li><a href="../editprofile/editprofile.php"><i class="fas fa-user"></i> My Account</a></li><br><br><br><br><br>
+            <br><br><br><br><br><br><br><li><a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul> 
+    </div>
+    </div>
+
+    <div class="main_contents">
+        <div class="profile_header">
+            <h4>Account Settings</h4>
+            <p>View & Edit Your Account Information Here.</p>
+        </div>
+
+        <!-- delete account script -->
+        <div>
+            <button class="delacc" onclick="document.getElementById('deleteaccount').style.display='block'">Delete Account</button>
+        </div>
+        <div id="deleteaccount" class="delmodal">
+        <span onclick="document.getElementById('deleteaccount').style.display='none'" class="close" title="Close Modal">&times;</span>
+        <form class="delmodal-content" action="">
+            <div class="delcontainer">
+            <h1>Delete Account</h1><br>
+            <p>Are You Sure You Want To Delete Your Account?<br>This Process Cannot Be Undone!</p><br>
+
+            <div class="clearfix">
+                <button type="button" class="cancelbtn">Cancel</button>
+                <a href="../deleteaccount/deleteaccount.php?userid=<?php echo $sessionID; ?> ">
+                <button class="deletebtn" type="button" name="deleteacc">Delete</button></a>
+            </div>
+            </div>
+        </form>
+        </div>
+    </div>
+
+             <div class="editcontainer">
+    
+                <form action="" method="POST" class="editprofilefrm" enctype="multipart/form-data">
+
+                <input type="hidden" name="userid" value="<?php echo $result[0]['userid'];?>">
+                <br><h4 class="editimage">Your Photo</h4><br>
+                <img src="<?php echo $result[0]['user_profile']?>" name="user_profile" height="200" width="200" class="edit-image" onClick="triggerClick()" id="profileDisplay"><br><br>
+                <label for="userp" class="picbtn" >Change Picture</label><br>
+                <input id="userp" style="visibility:hidden;" onChange="displayImage(this)" id="profileImage" type="file" name="user_profile">
+
+                    <h2>Basic Account Information</h2><br>
+                    <label class="main-labels">First Name:</label>
+                    <input type="text" name="first_name" value="<?php echo $result[0]['first_name']; ?>"><br><br>
+
+                    <label class="main-labels">Last Name:</label>
+                    <input type="text" name="last_name" value="<?php echo $result[0]['last_name']; ?>"><br><br>
+
+                    <label class="main-labels">Your Email:</label>
+                    <input type="text" name="email" readonly value="<?php echo $result[0]['email']; ?>"><br><br>
+
+                    <br><h2>Your Other Details</h2><br>
+                    <label class="main-labels">Your Age:</label>
+                    <input type="text" name="user_age" value="<?php echo $result[0]['user_age']; ?>"><br><br>
+
+                    <label class="main-labels">Nationality:</label>
+                    <input type="text" name="user_nationality" value="<?php echo $result[0]['user_nationality']; ?>"><br><br>
+
+                    <label class="main-labels">Gender:</label>
+                    <input type="text" name="user_gender" value="<?php echo $result[0]['user_gender']; ?>"><br><br>
+
+                    <br><h2>Your Education Details</h2><br>
+                    <label class="main-labels">Level:</label>
+                    <input type="text" name="user_education" value="<?php echo $result[0]['user_education']; ?>"><br><br>
+
+                    <label class="main-labels">School:</label>
+                    <input type="text" name="user_school" value="<?php echo $result[0]['user_school']; ?>"><br><br>
+
+                    <label class="main-labels">Course:</label>
+                    <input type="text" name="user_course" value="<?php echo $result[0]['user_course']; ?>"><br><br>
+
+                    <br><h2>Your Interests</h2><br>
+                     <div class="labels">Your First Interest: </div>
+                    <select name="user_interest_one" class="selectclass">
+                        <option value="NULL"><?php echo  $result[0]['user_interest_one']; ?></option>
+                        <option value="Animals">Animals</option>
+                        <option value="Arts and Crafts">Arts and Crafts</option>
+                        <option value="Blogging">Blogging</option>
+                        <option value="Cooking">Cooking</option>
+                        <option value="Coding">Coding</option>
+                        <option value="Gaming">Gaming</option>
+                        <option value="Gardening">Gardening</option>
+                        <option value="Photography">Photography</option>
+                        <option value="Reading">Reading</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Travelling">Travelling</option>
+                        <option value="Writing">Writing</option>
+                        <option value="Volunteering">Volunteering</option>
+                        <option value="Yoga">Yoga</option>
+                    </select>
+
+                    <br><div class="labels">Your Second Interest: </div>
+                    <select name="user_interest_two" class="selectclass">
+                        <option value="NULL"><?php echo  $result[0]['user_interest_two']; ?></option>
+                        <option value="Animals">Animals</option>
+                        <option value="Arts and Crafts">Arts and Crafts</option>
+                        <option value="Blogging">Blogging</option>
+                        <option value="Cooking">Cooking</option>
+                        <option value="Coding">Coding</option>
+                        <option value="Gaming">Gaming</option>
+                        <option value="Gardening">Gardening</option>
+                        <option value="Photography">Photography</option>
+                        <option value="Reading">Reading</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Travelling">Travelling</option>
+                        <option value="Writing">Writing</option>
+                        <option value="Volunteering">Volunteering</option>
+                        <option value="Yoga">Yoga</option>
+                    </select>
+
+                    <br><div class="labels">Your Third Interest: </div>
+                    <select name="user_interest_three" class="selectclass">
+                        <option value="NULL"><?php echo  $result[0]['user_interest_three'];  ?></option>
+                        <option value="Animals">Animals</option>
+                        <option value="Arts and Crafts">Arts and Crafts</option>
+                        <option value="Blogging">Blogging</option>
+                        <option value="Cooking">Cooking</option>
+                        <option value="Coding">Coding</option>
+                        <option value="Gaming">Gaming</option>
+                        <option value="Gardening">Gardening</option>
+                        <option value="Photography">Photography</option>
+                        <option value="Reading">Reading</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Travelling">Travelling</option>
+                        <option value="Writing">Writing</option>
+                        <option value="Volunteering">Volunteering</option>
+                        <option value="Yoga">Yoga</option>
+                    </select>
+
+                    <br><div class="labels">Your Four Interest: </div>
+                    <select name="user_interest_four" class="selectclass">
+                        <option value="NULL"><?php echo  $result[0]['user_interest_four']; ?></option>
+                        <option value="Animals">Animals</option>
+                        <option value="Arts and Crafts">Arts and Crafts</option>
+                        <option value="Blogging">Blogging</option>
+                        <option value="Cooking">Cooking</option>
+                        <option value="Coding">Coding</option>
+                        <option value="Gaming">Gaming</option>
+                        <option value="Gardening">Gardening</option>
+                        <option value="Photography">Photography</option>
+                        <option value="Reading">Reading</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Travelling">Travelling</option>
+                        <option value="Writing">Writing</option>
+                        <option value="Volunteering">Volunteering</option>
+                        <option value="Yoga">Yoga</option>
+                    </select>
+
+                    <br><label class="main-labels">Projects:</label><br><br>
+                    <input type="text" name="user_project" class="project-text" cols="42" rows="3" autocomplete="off" value="<?php echo $result[0]['user_project']; ?>"><br><br>
+
+                    <br><button class="edituprofile" type="submit" value="Submit" name="editprofile">Save Changes</button><br><br><br>
+                </form>
+            </div>
+            
+             <!-- Delete Script JS -->
+        <script>
+            var modal = document.getElementById('deleteaccount');
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        </script>
+
+        <script>
+            function triggerClick(e) {
+            document.querySelector('#profileImage').click();
+            }
+            function displayImage(e) {
+            if (e.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e){
+                document.querySelector('#profileDisplay').setAttribute('src', e.target.result);
+                }
+                reader.readAsDataURL(e.files[0]);
+            }
+            }
+        </script>
+
+
+
+</body>
+</html>
+
+           
