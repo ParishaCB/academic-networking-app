@@ -24,16 +24,19 @@ Project Objectives:
 
 • Allow students to create an account with their university email. This will provide
 verification that only students attending the university are accessing the application.
-It will further provide assurance to students that the application is a secure platform
-only for students at the university.
+
 • Allow students to create a professional profile that specifies their academic
 interests, provide information about any projects they may be working on, and
 details related to the course/school they are enrolled in.
+
 • Implement a simple user matching algorithm that uses the interests the students
 selected during the registration process, to match students together
+
 • Implement a simple search filter where students can filter their matches so that they
 can find specific students they may wish to collaborate with
+
 • Implement a simple chat feature where students can have conversations with other
 students
+
 • Create a discussion forum where students can view different topics and can create
 threads to ask questions and also answer questions from other students
