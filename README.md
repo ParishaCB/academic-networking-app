@@ -21,6 +21,7 @@ matching algorithm, a search filter, and forums, to allow students to connect an
 collaborate with ease. 
 
 Project Objectives:
+
 • Allow students to create an account with their university email. This will provide
 verification that only students attending the university are accessing the application.
 It will further provide assurance to students that the application is a secure platform
