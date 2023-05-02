@@ -1,0 +1,89 @@
+<?php
+
+include '../connection/dbconnect.php';
+session_start();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="../media/favicon.png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<!-- Add IntroJs styles -->
+	<link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    <link rel="stylesheet" href="../CSS/forum.css">
+    <title>Educatic | Forums</title>
+</head>
+
+<body>
+    <section>
+        <header>
+        <div class="forumscontainers">
+            <div class="forumslogos">
+                <a href="../userdashboard.php"><img src="../media/logo4.png" alt="EducaticLogo"></a>
+            </div>
+
+            <div class="fmenulinks">
+                <ul>
+                    <li><a href="../userdashboard.php">Home</a></li>
+                </ul>
+            </div>
+        </div>
+        </header>
+    </section>
+
+    <section>
+        <div class="forumcontainer">
+            <h1 class="forumheading">Welcome To The <span>Educatic</span> Forums!</h1><br>
+            <p class="forumtext">This is a peer to peer discussion forum where you can browse through different categories and topics 
+                and have conversations with your peers around campus! &#128522;</p><br>
+            <h4>Before You Begin, Please Remember:</h4><br>
+            <ul>
+                <li>Be Respectful At All Times. Any Offensive Behaviour Will Not Be Tolerated And Could Result In The Termination of Your Account.</li><br>
+                <li>Spam Posting, Advertising and Self-Promotion is Prohibited In These Forums.</li><br>
+                <li>Please Refrain From Posting Any Copyright-Infringed Material or Sharing Images, Links or Posts That Could Be 
+                    Deemed As Offensive.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <div class="browsecat">
+            <h2 class="catheading">Browse Categories</h2>
+        </div>
+
+        <!-- get all categories from the database and display as cards -->
+        <!-- use a for loop to loop through all the database categories -->
+
+        <?php
+
+        $sqlquery = "SELECT * FROM categories";
+        $categories = $conn->query($sqlquery);
+        $getcat = $categories->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ( $getcat as $category) { 
+            
+        $catid = $category['category_id'];    
+        $catname = $category['category_name'];    
+        $catdesc = $category['category_description'];    
+        ?>
+            
+        <div class="catcard">   
+            <div class="container">       
+                <div><img src="../media/img1.jpg" alt="" class="catimage"></div><br>
+                <div><h2 class="catcard-text1"> <?php echo $catname?> </h2></div><br>
+                <div><h2 class="catcard-text"> <?php echo $catdesc?> </h2></div><br><br>
+                <div><button class="catbutton"><a href="threads.php?catid=<?php echo $catid?> ">View Threads</a></button></div>
+            </div>
+        </div>
+        <?php
+            }
+        ?>
+
+    </section>
+
+</body>
+</html>
