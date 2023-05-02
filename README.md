@@ -1,5 +1,5 @@
 # academic-networking-app
-Final Year Project - Academic Networking Web Application
+# Final Year Project - Academic Networking Web Application
 
 Academic networking applications, which are catered specifically for academia, often
 consist of a platform that can allow users to manage their collaborative contacts and
@@ -20,7 +20,7 @@ this, several web technologies were used to implement features, such as a simple
 matching algorithm, a search filter, and forums, to allow students to connect and
 collaborate with ease. 
 
-Project Objectives:
+# Project Objectives:
 
 • Allow students to create an account with their university email. This will provide
 verification that only students attending the university are accessing the application.
