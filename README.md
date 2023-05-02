@@ -40,3 +40,8 @@ students
 
 • Create a discussion forum where students can view different topics and can create
 threads to ask questions and also answer questions from other students
+
+# Project Screenshots
+
+![Screenshot (109)](https://user-images.githubusercontent.com/120040449/235695541-17ccbd90-97b2-4c40-826e-6ea235f16095.png)
+
